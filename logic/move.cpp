@@ -12,6 +12,11 @@ Move::~Move()
 {
 }
 
+bool Move::operator==(const Move m)
+{
+    return (start == m.start && end == m.end);
+}
+
 std::ostream& operator<<(std::ostream &o, const Move m)
 {
     o << m.start << " -> " << m.end;

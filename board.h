@@ -16,5 +16,8 @@ public:
 
     void addPiece(Position position, Color color = WHITE);
     void fromFen(std::string fen);
+
     std::vector<Move> getLegalMoves();
+
+    void movePiece(Move move);
 };

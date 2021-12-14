@@ -16,5 +16,6 @@ public:
     bool isLegal();
 
     Position operator+(const Position p);
+    bool operator==(const Position p);
     friend std::ostream& operator<<(std::ostream &o, const Position p);
 };

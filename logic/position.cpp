@@ -20,6 +20,11 @@ Position Position::operator+(const Position p2){
     return p1;
 }
 
+bool Position::operator==(const Position p)
+{
+    return (x == p.x && y == p.y);
+}
+
 std::ostream& operator<<(std::ostream &o, const Position p)
 {
     o << (char)(p.x + 'a') << p.y + 1;

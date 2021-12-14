@@ -95,3 +95,33 @@ std::vector<Move> Board::getLegalMoves()
     }
     return moves;
 }
+
+bool isMoveLegal(std::vector<Move> moves, Move actual)
+{
+    for (auto move : moves)
+    {
+        if (move == actual)
+        return true;
+    }
+    return false;
+}
+
+void Board::movePiece(Move move)
+{
+    Position start = move.getStart();
+    Position end = move.getEnd();
+    if (tab[start.getX()][start.getY()] == nullptr)
+    {
+        std::cout << "ya personne frero" << std::endl;
+        return;
+    }
+    if (!isMoveLegal(tab[start.getX()][start.getY()]->getMoves(tab), move))
+    {
+        std::cout << "not legal move" << std::endl;
+        return;
+    }
+
+    tab[end.getX()][end.getY()] = tab[start.getX()][start.getY()];
+    tab[start.getX()][start.getY()] = nullptr;
+    tab[end.getX()][end.getY()]->setPosition(end);
+}

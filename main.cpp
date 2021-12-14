@@ -11,8 +11,8 @@ void readMoveList(std::vector<Move> moves)
 int main(){
     Board test;
     test.addPiece({0,0});
-    test.addPiece({0,1});
-    test.addPiece({1,0}, BLACK);
+    test.print();
+    test.movePiece({{0,0}, {0,4}});
     test.print();
     readMoveList(test.getLegalMoves());
     return 1;

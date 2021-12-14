@@ -11,5 +11,9 @@ public:
     Move(int startx, int starty, int endx, int endy);
     ~Move();
 
+    Position getStart() { return start; }
+    Position getEnd() { return end; }
+
+    bool operator==(const Move m);
     friend std::ostream& operator<<(std::ostream &o, const Move m);
 };
