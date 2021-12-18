@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "../logic/move.h"
 
 enum Color{
@@ -23,5 +24,6 @@ public:
     void setPosition(Position position) { this->position = position;}
 
     virtual void print() = 0;
-    virtual std::vector<Move> getMoves(Piece*** board) = 0;
+    virtual void draw(sf::RenderWindow* window) = 0;
+    virtual std::vector<Move> getMoves(std::vector<Piece*> pieceList) = 0;
 };

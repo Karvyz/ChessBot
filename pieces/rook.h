@@ -11,6 +11,6 @@ public:
 
 
     void print();
-
-    std::vector<Move> getMoves(Piece*** board);
+    void draw(sf::RenderWindow* window);
+    std::vector<Move> getMoves(std::vector<Piece*> pieceList);
 };

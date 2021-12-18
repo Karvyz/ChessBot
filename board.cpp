@@ -5,57 +5,58 @@
 Board::Board(/* args */)
 {
     PlayerColor = WHITE;
-    tab = new Piece**[8];
-    for (int i = 0; i < SBOARD; i++)
-    {
-        tab[i] = new Piece*[8];
-        for (int j = 0; j < SBOARD; j++)
-        {
-            tab[i][j] = nullptr;
-        }
-        
-    }
     std::cout<< "Board created" << std::endl;
 }
 
 Board::~Board()
 {
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            if (tab[i][j] != nullptr) delete tab[i][j];
-        }
-        delete tab[i];
-    }
-    delete tab;
     std::cout<< "Board destroyed" << std::endl;
 }
 
 void Board::print(){
-    for (int y = 7; y >= 0; y--)
-    {
-    std::cout << y + 1;
-        for (int x = 0; x < 8; x++)
-        {
-            if (tab[x][y] == nullptr)
-                std::cout << ".";
-            else
-            {
-                tab[x][y]->print();
+    // for (int y = 7; y >= 0; y--)
+    // {
+    // std::cout << y + 1;
+    //     for (int x = 0; x < 8; x++)
+    //     {
+    //         if (tab[x][y] == nullptr)
+    //             std::cout << ".";
+    //         else
+    //         {
+    //             tab[x][y]->print();
 
-            }
+    //         }
+    //     }
+    //     std::cout << std::endl;
+        
+    // }
+    // std::cout << " abcdefgh" << std::endl;
+    
+}
+
+void Board::draw(sf::RenderWindow* window)
+{
+    sf::RectangleShape square(sf::Vector2f(100,100));
+    square.setFillColor(sf::Color(255,255,255));
+    
+    for (size_t y = 0; y < 8; y++)
+    {
+        for (size_t x = 0; x < 4; x++)
+        {
+            square.setPosition(sf::Vector2f( (2 * x + ((y % 2 == 0) ? 0 : 1)) * 100, y * 100));
+            window->draw(square);
         }
-        std::cout << std::endl;
         
     }
-    std::cout << " abcdefgh" << std::endl;
-    
+    for (auto piece : pieceList)
+    {
+        piece->draw(window);
+    }
 }
 
 void Board::addPiece(Position position, Color color)
 {
-    tab[position.getX()][position.getY()] = new Rook(position, color);
+    pieceList.push_back(new Rook(position, color));
 }
 
 void Board::fromFen(std::string fen)
@@ -70,7 +71,7 @@ void Board::fromFen(std::string fen)
         }
         if (fen[i] == 'r')
         {
-            tab[pos%SBOARD][pos/SBOARD] = new Rook(Position(pos%SBOARD, 7 - pos/SBOARD));
+            pieceList.push_back(new Rook(Position(pos%SBOARD, 7 - pos/SBOARD)));
             std::cout << "   "  << pos%SBOARD<< 7 - pos/SBOARD  << std::endl;
             pos++;
         }
@@ -81,17 +82,10 @@ void Board::fromFen(std::string fen)
 std::vector<Move> Board::getLegalMoves()
 {
     std::vector<Move> moves;
-    for (size_t i = 0; i < SBOARD; i++)
+    for (auto piece : pieceList)
     {
-        for (size_t j = 0; j < SBOARD; j++)
-        {
-            if (tab[i][j] != nullptr && tab[i][j]->getColor() == PlayerColor)
-            {
-                std::vector<Move> temp = tab[i][j]->getMoves(tab);
-                moves.insert( moves.end(), temp.begin(), temp.end());
-            }
-        }
-        
+        std::vector<Move> temp = piece->getMoves(pieceList);
+        moves.insert( moves.end(), temp.begin(), temp.end());
     }
     return moves;
 }
@@ -110,18 +104,13 @@ void Board::movePiece(Move move)
 {
     Position start = move.getStart();
     Position end = move.getEnd();
-    if (tab[start.getX()][start.getY()] == nullptr)
-    {
-        std::cout << "ya personne frero" << std::endl;
-        return;
-    }
-    if (!isMoveLegal(tab[start.getX()][start.getY()]->getMoves(tab), move))
-    {
-        std::cout << "not legal move" << std::endl;
-        return;
-    }
+    // if (!isMoveLegal(tab[start.getX()][start.getY()]->getMoves(tab), move))
+    // {
+    //     std::cout << "not legal move" << std::endl;
+    //     return;
+    // }
 
-    tab[end.getX()][end.getY()] = tab[start.getX()][start.getY()];
-    tab[start.getX()][start.getY()] = nullptr;
-    tab[end.getX()][end.getY()]->setPosition(end);
+    // tab[end.getX()][end.getY()] = tab[start.getX()][start.getY()];
+    // tab[start.getX()][start.getY()] = nullptr;
+    // tab[end.getX()][end.getY()]->setPosition(end);
 }
