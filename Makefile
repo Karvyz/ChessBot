@@ -1,28 +1,32 @@
 GCC=g++
 ARGS=-lsfml-graphics -lsfml-window -lsfml-system
-RULES=main board position move rook
+RULES=init main board position move rook
 
 
 default: compile
-	./exec
+	./build/exec
 	
 clean:
-	rm objects/*
+	rm build -r
+
+init:
+	mkdir build
+	mkdir build/objects
 
 compile: $(RULES)
-	$(GCC) $(ARGS) objects/* -o exec
+	$(GCC) $(ARGS) build/objects/* -o build/exec
 
-main: main.cpp
-	$(GCC) main.cpp -c -o objects/main.o
+main:
+	$(GCC) src/main.cpp -c -o build/objects/main.o
 
-board: board.cpp
-	$(GCC) board.cpp -c -o objects/board.o
+board:
+	$(GCC) src/board.cpp -c -o build/objects/board.o
 
-position: logic/position.cpp
-	$(GCC) logic/position.cpp -c -o objects/position.o
+position:
+	$(GCC) src/logic/position.cpp -c -o build/objects/position.o
 
-move: logic/move.cpp
-	$(GCC) logic/move.cpp -c -o objects/move.o
+move:
+	$(GCC) src/logic/move.cpp -c -o build/objects/move.o
 
-rook: pieces/rook.cpp
-	$(GCC) pieces/rook.cpp -c -o objects/rook.o
+rook:
+	$(GCC) src/pieces/rook.cpp -c -o build/objects/rook.o

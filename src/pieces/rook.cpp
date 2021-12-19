@@ -1,4 +1,4 @@
-#include "rook.h"
+#include "rook.hpp"
 
 Rook::Rook(Position position, Color color) : Piece(position, color, 5)
 {
@@ -15,7 +15,7 @@ void Rook::print(){
 void Rook::draw(sf::RenderWindow* window)
 {
     sf::Texture texture;
-    texture.loadFromFile(((color == WHITE) ? "images/white rook.png" : "images/black rook.png"));
+    texture.loadFromFile(((color == WHITE) ? "../../img/white rook.png" : "../../img/black rook.png"));
     sf::Sprite sprite;
     sprite.setTexture(texture);
     sprite.setScale(sf::Vector2f(0.4, 0.4));

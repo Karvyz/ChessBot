@@ -1,4 +1,4 @@
-#include "board.h"
+#include "board.hpp"
 
 void readMoveList(std::vector<Move> moves)
 {
@@ -12,12 +12,11 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(800,800), "test");
 
     Board test;
-    test.addPiece({0,0});
-    test.print();
-    test.movePiece({{0,0}, {0,4}});
-    test.print();
-    readMoveList(test.getLegalMoves());
+    test.addPiece({0,0}, BLACK);
 
+    window.clear();
+    test.draw(&window);
+    window.display();
     while (window.isOpen())
     {
         sf::Event event;
@@ -27,9 +26,7 @@ int main(){
                 window.close();
         }
 
-        window.clear();
-        test.draw(&window);
-        window.display();
+
     }
     return 0;
 }

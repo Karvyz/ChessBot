@@ -1,4 +1,4 @@
-#include "move.h"
+#include "move.hpp"
 
 Move::Move(Position start, Position end) : start(start), end(end)
 {

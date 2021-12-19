@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "../logic/move.h"
+#include "../logic/move.hpp"
 
 enum Color{
     WHITE,

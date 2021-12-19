@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstddef>
-#include "board.h"
+#include "board.hpp"
 
 Board::Board(/* args */)
 {

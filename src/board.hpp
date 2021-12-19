@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "pieces/rook.h"
+#include "pieces/rook.hpp"
 
 class Board
 {
