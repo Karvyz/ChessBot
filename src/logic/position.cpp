@@ -13,7 +13,13 @@ bool Position::isLegal()
     return (x >= 0 && x <=7 && y >= 0 && y <= 7);
 }
 
-Position Position::operator+(const Position p2){
+Position Position::mouseToBoard()
+{
+    return {x / 100, 7 - (y / 100)};
+}
+
+Position Position::operator+(const Position p2)
+{
     Position p1(*this);
     p1.x += p2.x;
     p1.y += p2.y;

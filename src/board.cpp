@@ -13,6 +13,15 @@ Board::~Board()
     std::cout<< "Board destroyed" << std::endl;
 }
 
+Piece* Board::getPiece(Position p)
+{
+    for (auto piece : pieceList)
+    {
+        if (piece->getPosition() == p) return piece;
+    }
+    return nullptr;
+}
+
 void Board::print(){
     // for (int y = 7; y >= 0; y--)
     // {
@@ -36,6 +45,8 @@ void Board::print(){
 
 void Board::draw(sf::RenderWindow* window)
 {
+    std::cout << "draw" << std::endl;
+    window->clear(sf::Color(120,120,120));
     sf::RectangleShape square(sf::Vector2f(100,100));
     square.setFillColor(sf::Color(255,255,255));
     
@@ -52,11 +63,28 @@ void Board::draw(sf::RenderWindow* window)
     {
         piece->draw(window);
     }
+    //window->display();
 }
 
-void Board::addPiece(Position position, Color color)
+void Board::drawMoves(sf::RenderWindow* window, Piece* piece)
 {
-    pieceList.push_back(new Rook(position, color));
+    draw(window);
+
+    if (piece == nullptr) return;
+    std::cout << "draw moves" << std::endl;
+
+    sf::RectangleShape square(sf::Vector2f(100, 100));
+    square.setFillColor(sf::Color(255, 0, 0, 160));
+    for (auto move : piece->getMoves(pieceList))
+    {
+        square.setPosition(sf::Vector2f(move.getEnd().getX() * 100, (7 - move.getEnd().getY()) * 100));
+        window->draw(square);
+    }
+}
+
+void Board::addPiece(Piece* piece)
+{
+    pieceList.push_back(piece);
 }
 
 void Board::fromFen(std::string fen)
@@ -100,17 +128,8 @@ bool isMoveLegal(std::vector<Move> moves, Move actual)
     return false;
 }
 
-void Board::movePiece(Move move)
+void Board::setMoves()
 {
-    Position start = move.getStart();
-    Position end = move.getEnd();
-    // if (!isMoveLegal(tab[start.getX()][start.getY()]->getMoves(tab), move))
-    // {
-    //     std::cout << "not legal move" << std::endl;
-    //     return;
-    // }
-
-    // tab[end.getX()][end.getY()] = tab[start.getX()][start.getY()];
-    // tab[start.getX()][start.getY()] = nullptr;
-    // tab[end.getX()][end.getY()]->setPosition(end);
+    for (auto piece : pieceList)
+        piece->setMoveList(pieceList);
 }

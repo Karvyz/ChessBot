@@ -14,6 +14,7 @@ public:
     int getY() { return y; }
 
     bool isLegal();
+    Position mouseToBoard();
 
     Position operator+(const Position p);
     bool operator==(const Position p);

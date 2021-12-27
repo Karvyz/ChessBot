@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include <ctime>
 
 void readMoveList(std::vector<Move> moves)
 {
@@ -9,14 +10,20 @@ void readMoveList(std::vector<Move> moves)
 }
 
 int main(){
-    sf::RenderWindow window(sf::VideoMode(800,800), "test");
+    sf::RenderWindow window(sf::VideoMode(800,800), "board");
 
-    Board test;
-    test.addPiece({0,0}, BLACK);
+    Board board;
+    board.addPiece(new Queen({4, 4}));
+    board.addPiece(new Rook({3,4}));
+    board.setMoves();
+    readMoveList(board.getLegalMoves());
 
-    window.clear();
-    test.draw(&window);
+    board.draw(&window);
     window.display();
+    Position mousePosition(0,0);
+
+    Piece* selected = nullptr;
+    
     while (window.isOpen())
     {
         sf::Event event;
@@ -26,7 +33,30 @@ int main(){
                 window.close();
         }
 
-
+        if (event.type == sf::Event::MouseButtonPressed)
+        {
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                if ((1 - 1 > 0.1) || (event.mouseButton.x != mousePosition.getX() && event.mouseButton.y != mousePosition.getY()))
+                {
+                    mousePosition = {event.mouseButton.x, event.mouseButton.y};
+                    std::cout << "the left button was pressed" << std::endl;
+                    if (selected != nullptr && selected->inMoveList(mousePosition.mouseToBoard()))
+                    {
+                        std::cout << "move tentative" << std::endl;
+                        selected->setPosition(mousePosition.mouseToBoard());
+                        board.setMoves();
+                        selected = nullptr;
+                        board.draw(&window);
+                        window.display();
+                        continue;                        
+                    }
+                    selected = board.getPiece(mousePosition.mouseToBoard());
+                    board.drawMoves(&window, selected);
+                    window.display();
+                }
+            }
+        }
     }
     return 0;
 }

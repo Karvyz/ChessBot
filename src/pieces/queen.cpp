@@ -1,35 +1,35 @@
-#include "rook.hpp"
+#include "queen.hpp"
 
-Rook::Rook(Position position, Color color) : Piece(position, color, 5)
+Queen::Queen(Position position, Color color) : Piece(position, color, 5)
 {
 }
 
-Rook::~Rook()
+Queen::~Queen()
 {
 }
 
-void Rook::print(){
-    std::cout << ((color == WHITE) ? "r" : "R");
+void Queen::print(){
+    std::cout << ((color == WHITE) ? "q" : "Q");
 }
 
-void Rook::draw(sf::RenderWindow* window)
+void Queen::draw(sf::RenderWindow* window)
 {
     sf::Texture texture;
-    texture.loadFromFile(((color == WHITE) ? "img/white rook.png" : "img/black rook.png"));
+    texture.loadFromFile(((color == WHITE) ? "img/white queen.png" : "img/black queen.png"));
     sf::Sprite sprite;
     sprite.setTexture(texture);
     sprite.setScale(sf::Vector2f(0.4, 0.4));
     sprite.setPosition(sf::Vector2f(position.getX() * 100, (7 - position.getY()) * 100));
     window->draw(sprite);
 }
+  
 
 
-
-std::vector<Move> Rook::getMoves(std::vector<Piece*> pieceList)
+std::vector<Move> Queen::getMoves(std::vector<Piece*> pieceList)
 {
-    Position offset[4] = {{1, 0}, {-1, 0}, {0 ,1}, {0, -1}}; // directions of movements
+    Position offset[] = {{1, 0}, {-1, 0}, {0 ,1}, {0, -1}, {1, 1}, {-1, -1}, {-1 ,1}, {1, -1}}; // directions of movements
     std::vector<Move> moves;
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 0; i < 8; i++)
     {
         Position temposition = position;
         while (true)
@@ -53,6 +53,7 @@ std::vector<Move> Rook::getMoves(std::vector<Piece*> pieceList)
                 }
             }
             if (stop) break;
+
             moves.push_back(Move(position, temposition));
         }
     }
