@@ -13,9 +13,11 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(800,800), "board");
 
     Board board;
-    board.addPiece(new King({0,1}));
+    board.addPiece(new King({1,1}));
     board.addPiece(new Queen({1, 6}));
     board.addPiece(new Rook({0,7}, BLACK));
+    board.addPiece(new Bishop({5,5}));
+    board.addPiece(new Knight({6,6}));
     board.setLegalMoves();
     readMoveList(board.getLegalMoves());
     

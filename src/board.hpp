@@ -3,6 +3,8 @@
 #include "pieces/rook.hpp"
 #include "pieces/queen.hpp"
 #include "pieces/king.hpp"
+#include "pieces/bishop.hpp"
+#include "pieces/knight.hpp"
 
 class Board
 {
