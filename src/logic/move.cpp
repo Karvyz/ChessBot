@@ -1,6 +1,6 @@
 #include "move.hpp"
 
-Move::Move(Position start, Position end) : start(start), end(end)
+Move::Move(Position start, Position end, void* startPiece, void* endPiece) : start(start), end(end), startPiece(startPiece), endPiece(endPiece)
 {
 }
 

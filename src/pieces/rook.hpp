@@ -8,6 +8,7 @@ private:
 public:
     Rook(Position position ,Color color = WHITE);
     ~Rook();
+    Piece* clone() { return new Rook(*this); }
 
 
     void print();

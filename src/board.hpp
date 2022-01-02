@@ -2,6 +2,7 @@
 #include <string>
 #include "pieces/rook.hpp"
 #include "pieces/queen.hpp"
+#include "pieces/king.hpp"
 
 class Board
 {
@@ -9,10 +10,9 @@ private:
     const int SBOARD = 8;
     std::vector<Piece*> pieceList;
     Color PlayerColor;
-    std::vector<Position> whitePieces;
-    std::vector<Position> blackPieces;
 public:
     Board(/* args */);
+    Board(std::vector<Piece*> pieceList, Color color, Move move);
     ~Board();
 
     Piece* getPiece(Position position);
@@ -24,7 +24,7 @@ public:
     void addPiece(Piece* p);
     void fromFen(std::string fen);
     
-
+    bool isOpposedKingAttacked();
+    void setLegalMoves();
     std::vector<Move> getLegalMoves();
-    void setMoves();
 };

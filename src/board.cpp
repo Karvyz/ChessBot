@@ -5,12 +5,26 @@
 Board::Board(/* args */)
 {
     PlayerColor = WHITE;
-    std::cout<< "Board created" << std::endl;
+}
+
+Board::Board(std::vector<Piece*> pieceList, Color color, Move move)
+{
+    for (auto piece : pieceList)
+    {
+        if (!(piece->getPosition() == move.getEnd()))
+        {
+            Piece* temp = piece->clone();
+            if (piece->getPosition() == move.getStart())
+            {
+                temp->setPosition(move.getEnd());
+            }
+            this->pieceList.push_back(temp);
+        }
+    }
 }
 
 Board::~Board()
 {
-    std::cout<< "Board destroyed" << std::endl;
 }
 
 Piece* Board::getPiece(Position p)
@@ -23,23 +37,28 @@ Piece* Board::getPiece(Position p)
 }
 
 void Board::print(){
-    // for (int y = 7; y >= 0; y--)
-    // {
-    // std::cout << y + 1;
-    //     for (int x = 0; x < 8; x++)
-    //     {
-    //         if (tab[x][y] == nullptr)
-    //             std::cout << ".";
-    //         else
-    //         {
-    //             tab[x][y]->print();
-
-    //         }
-    //     }
-    //     std::cout << std::endl;
+    for (int y = 7; y >= 0; y--)
+    {
+    std::cout << y + 1;
+        for (int x = 0; x < 8; x++)
+        {
+            Position temp(x, y);
+            bool stop = true;
+            for (auto piece : pieceList)
+            {
+                if (piece->getPosition() == temp)
+                {
+                    stop = false;
+                    piece->print();
+                }
+            }
+            if (stop)
+                std::cout << ".";
+        }
+        std::cout << std::endl;
         
-    // }
-    // std::cout << " abcdefgh" << std::endl;
+    }
+    std::cout << " abcdefgh" << std::endl;
     
 }
 
@@ -75,7 +94,7 @@ void Board::drawMoves(sf::RenderWindow* window, Piece* piece)
 
     sf::RectangleShape square(sf::Vector2f(100, 100));
     square.setFillColor(sf::Color(255, 0, 0, 160));
-    for (auto move : piece->getMoves(pieceList))
+    for (auto move : piece->getLegalMoves())
     {
         square.setPosition(sf::Vector2f(move.getEnd().getX() * 100, (7 - move.getEnd().getY()) * 100));
         window->draw(square);
@@ -107,13 +126,57 @@ void Board::fromFen(std::string fen)
     
 }
 
-std::vector<Move> Board::getLegalMoves()
+bool Board::isOpposedKingAttacked()
 {
     std::vector<Move> moves;
     for (auto piece : pieceList)
     {
         std::vector<Move> temp = piece->getMoves(pieceList);
         moves.insert( moves.end(), temp.begin(), temp.end());
+    }
+    for (auto move : moves)
+    {
+        if (move.getEndPiece() != nullptr)
+        {
+            Piece* temp = (Piece*)move.getEndPiece();
+            if (temp->getValue() == 1000)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Board::setLegalMoves()
+{
+    for (auto piece : pieceList)
+    {
+        if (piece->getColor() == PlayerColor)
+        {
+            std::vector<Move> moves = piece->getMoves(pieceList);
+            std::vector<Move> legalMoves;
+            for (auto move : moves)
+            {
+                Board b(pieceList, (Color)(1 - PlayerColor), move);
+                if (b.isOpposedKingAttacked()) continue;
+                legalMoves.push_back(move);
+            }
+            piece->setLegalMoves(legalMoves);
+        }
+    }
+}
+
+std::vector<Move> Board::getLegalMoves()
+{
+    std::vector<Move> moves;
+    for (auto piece : pieceList)
+    {
+        if (piece->getColor() == PlayerColor)
+        {
+            std::vector<Move> temp = piece->getLegalMoves();
+            moves.insert( moves.end(), temp.begin(), temp.end());
+        }
     }
     return moves;
 }
@@ -126,10 +189,4 @@ bool isMoveLegal(std::vector<Move> moves, Move actual)
         return true;
     }
     return false;
-}
-
-void Board::setMoves()
-{
-    for (auto piece : pieceList)
-        piece->setMoveList(pieceList);
 }

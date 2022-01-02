@@ -13,11 +13,12 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(800,800), "board");
 
     Board board;
-    board.addPiece(new Queen({4, 4}));
-    board.addPiece(new Rook({3,4}));
-    board.setMoves();
+    board.addPiece(new King({0,1}));
+    board.addPiece(new Queen({1, 6}));
+    board.addPiece(new Rook({0,7}, BLACK));
+    board.setLegalMoves();
     readMoveList(board.getLegalMoves());
-
+    
     board.draw(&window);
     window.display();
     Position mousePosition(0,0);
@@ -45,7 +46,7 @@ int main(){
                     {
                         std::cout << "move tentative" << std::endl;
                         selected->setPosition(mousePosition.mouseToBoard());
-                        board.setMoves();
+                        board.setLegalMoves();
                         selected = nullptr;
                         board.draw(&window);
                         window.display();

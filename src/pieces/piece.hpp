@@ -6,8 +6,8 @@
 #include "../logic/move.hpp"
 
 enum Color{
-    WHITE,
-    BLACK
+    WHITE = 0,
+    BLACK = 1
 };
 
 class Piece
@@ -16,21 +16,22 @@ protected:
     Position position;
     Color color;
     float value;
-    std::vector<Move> moveList;
+    std::vector<Move> legalMoveList;
 public:
     Piece(Position position, Color color, float value = 1) : position(position), color(color), value(value) {}
     ~Piece() {}
+    virtual Piece* clone() = 0;
+
 
     Color getColor() { return color; }
     float getValue() { return value; }
     Position getPosition() { return position; }
     void setPosition(Position position) { this->position = position;}
 
-    void setMoveList(std::vector<Piece*> pieceList) {
-        moveList = getMoves(pieceList);
-    }
+    std::vector<Move> getLegalMoves() { return legalMoveList; }
+    void setLegalMoves(std::vector<Move> moves) { legalMoveList = moves; }
     bool inMoveList(Position p) {
-        for (auto move : moveList)
+        for (auto move : legalMoveList)
             if (move.getEnd() == p) return true;
         return false;
     }

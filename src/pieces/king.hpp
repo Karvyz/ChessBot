@@ -1,15 +1,14 @@
 #pragma once
 #include "piece.hpp"
 
-class Queen : public Piece
+class King : public Piece
 {
 private:
 
 public:
-    Queen(Position position ,Color color = WHITE);
-    ~Queen();
-    Piece* clone() { return new Queen(*this); }
-
+    King(Position position ,Color color = WHITE);
+    ~King();
+    Piece* clone() { return new King(*this); }
 
     void print();
     void draw(sf::RenderWindow* window);

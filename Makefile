@@ -1,6 +1,6 @@
 GCC=g++
 ARGS=-lsfml-graphics -lsfml-window -lsfml-system
-RULES=main board position move rook queen
+RULES=main board position move rook queen king
 
 
 default: compile
@@ -33,3 +33,6 @@ rook:
 
 queen:
 	$(GCC) src/pieces/queen.cpp -c -o build/objects/queen.o
+
+king:
+	$(GCC) src/pieces/king.cpp -c -o build/objects/king.o

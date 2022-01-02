@@ -47,7 +47,7 @@ std::vector<Move> Rook::getMoves(std::vector<Piece*> pieceList)
                     if (piece->getColor() == color) break;
                     else
                     {
-                        moves.push_back(Move(position, temposition));
+                        moves.push_back(Move(position, temposition, this, piece));
                         break;
                     }
                 }
